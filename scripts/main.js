@@ -2,6 +2,8 @@ const dealerHand = document.getElementById("dealer-hand");
 const playerHand = document.getElementById("player-hand");
 const dealButton = document.getElementById("deal-button");
 const hitButton = document.getElementById("hit-button");
+const dealerPointBox = document.getElementById("dealer-points");
+const playerPointBox = document.getElementById("player-points");
 const deck = [];
 let shuffledDeck = [];
 let dealerDeck = [];
@@ -52,7 +54,7 @@ const render = () => {
 const deal = (cards, target) => {
   dealButton.setAttribute('disabled', true);
   const currentCard = cards.pop();
-  target.push(currentCard)
+  target.push(currentCard);
 };
 
 const hit = () => {
@@ -60,8 +62,48 @@ const hit = () => {
   render();
 };
 
-const calculatePoints = (playerCard, dealerCard) => {
-  
+const calculateDealerPoints = (dealerCards) => {
+  let playerScore = 0;
+  console.log(dealerCards[1].pointValue);
+  console.log(dealerCards[0].pointValue);
+  if (dealerCards[0].pointValue == 'ace') {
+    playerScore += 11
+  }
+  if (dealerCards[1].pointValue == 'ace') {
+    playerScore += 11
+  }
+  if (dealerCards[0].pointValue == 'jack' || dealerCards[0].pointValue == 'king' || dealerCards[0].pointValue == 'queen') {
+    playerScore += 10
+  }
+  if (dealerCards[1].pointValue == 'jack' || dealerCards[1].pointValue == 'king' || dealerCards[1].pointValue == 'queen') {
+    playerScore += 10
+  } else {
+    playerScore += dealerCards[1].pointValue;
+    playerScore += dealerCards[0].pointValue;
+  }
+  dealerPointBox.innerHTML = playerScore;
+};
+
+const calculatePlayerPoints = (playerCards) => {
+  let playerScore = 0;
+  console.log(playerCards[1].pointValue);
+  console.log(playerCards[0].pointValue);
+  if (playerCards[0].pointValue == 'ace') {
+    playerScore += 11
+  }
+  if (playerCards[1].pointValue == 'ace') {
+    playerScore += 11
+  }
+  if (playerCards[0].pointValue == 'jack' || playerCards[0].pointValue == 'king' || playerCards[0].pointValue == 'queen') {
+    playerScore += 10
+  }
+  if (playerCards[1].pointValue == 'jack' || playerCards[1].pointValue == 'king' || playerCards[1].pointValue == 'queen') {
+    playerScore += 10
+  } else {
+    playerScore += playerCards[1].pointValue;
+    playerScore += playerCards[0].pointValue;
+  }
+  playerPointBox.innerHTML = playerScore;
 };
 
 
@@ -74,12 +116,13 @@ window.addEventListener("DOMContentLoaded", () => {
     deal(shuffledDeck, playerDeck);
     deal(shuffledDeck, dealerDeck);
     deal(shuffledDeck, playerDeck);
-    calculatePoints(playerDeck, dealerDeck)
+    calculateDealerPoints(dealerDeck);
+    calculatePlayerPoints(playerDeck);
     render();
   })
   hitButton.addEventListener('click', () => {
     shuffleDeck();
-    hit()
+    hit();
   })
 });
 
